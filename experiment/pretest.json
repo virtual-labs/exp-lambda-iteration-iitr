@@ -1,39 +1,55 @@
-{
-  "version": 2.0,
-  "questions": [
-    {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
-  ]
-}
+[ 
+	{
+		"question": "The main objective of economic dispatch in power systems is to:",
+		"answers": {
+			"a": "Minimize transmission losses",
+			"b": "Maximize generator output",
+			"c": "Improve power factor",
+			"d": "Minimize total generation cost"
+		},
+		"correctAnswer": "d"
+	},
+	{
+		"question": "The equal incremental cost criterion states that:",
+		"answers": {
+			"a": "All generators must generate equal power",
+			"b": "Total generation must equal total demand",
+			"c": "Incremental costs of all committed units must be equal",
+			"d": "Incremental costs of large generation unit must be larger"
+		},
+		"correctAnswer": "c"
+	},
+	{
+		"question": "Incremental fuel cost is defined as:",
+		"answers": {
+			"a": "Ratio of fuel input to generator output",
+			"b": "Derivative of generator's cost function with respect to its power output",
+			"c": "Difference between maximum and minimum cost",
+			"d": "Ratio of cost to load demand"
+		},
+		"correctAnswer": "b"
+	},
+	{
+		"question": "Which of the following methods can be used for solving economic dispatch problems?",
+		"answers": {
+			"a": "Newton-Raphson method",
+			"b": "Fast Decoupled method",
+			"c": "Gauss-Seidel method",
+			"d": "λ-Iteration method"
+		},
+		"correctAnswer": "d"
+	},
+	{
+		"question": "5. If two generators have equal incremental costs but different fuel cost functions, then:",
+		"answers": {
+			"a": "They share load according to their cost curves",
+			"b": "They must generate equal power",
+			"c": "The cheaper generator will supply full load",
+			"d": "The generator with lower penalty factor will supply more"
+		},
+		"correctAnswer": "a"
+	}
+]
+
+
+  

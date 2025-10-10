@@ -1,1 +1,1 @@
-## Experiment name
+## To perform the economic dispatch.

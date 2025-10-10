@@ -1,1 +1,1 @@
-### Aim of the experiment
+#### To understand, perform and analyze economic dispatch for generator units.
