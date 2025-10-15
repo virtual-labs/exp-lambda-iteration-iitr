@@ -1,0 +1,302 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #394453;
+    padding: 20px;
+    min-height: 100vh;
+}
+/* Main Container */
+.container {
+    max-width: 1100px;
+    height: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/* Heading */
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+.subtitle {
+    text-align: center;
+    color: #7f8c8d;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+/* Navbar */
+.navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    position: relative;
+}
+/* Instructions Button */
+.instructions {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 150px;
+}
+.instructions button {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    max-width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.instructions button:hover {
+    background-color: #040f19;
+}
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+}
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 25px 30px;
+    border: none;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    animation: slideIn 0.3s ease;
+    box-sizing: border-box;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.close {
+    color: #444;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    margin-top: -10px;
+}
+.close:hover {
+    color: #e53935;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+/* Headings */
+h2 {
+    color: #34495e;
+    
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    background-color: #ecf0f1;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+h3, h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+/* Input rows */
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+label {
+    color: #555;
+    font-weight: 500;
+    min-width: 200px;
+}
+input[type="number"] {
+    padding: 10px 15px;
+    border: 2px solid #dfe6e9;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 250px;
+    transition: border-color 0.3s;
+}
+input[type="number"]:focus {
+    outline: none;
+    border-color: #3498db;
+}
+/* Buttons */
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #2980b9;
+}
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+.button-secondary {
+    background-color: #1f2e3e;
+}
+.button-secondary:hover {
+    background-color: #1f2e3e;
+}
+/* Table */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    margin-top: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: max-content; /* Ensures table doesn't shrink below content width */
+}
+th, td {
+    border: 1px solid #dfe6e9;
+    padding: 12px;
+    text-align: center;
+    white-space: nowrap; /* Prevents text wrapping in cells to maintain alignment */
+}
+th {
+    background-color: #34495e;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+tbody tr:hover {
+    background-color: #e8f4f8;
+}
+td input {
+    width: 100%;
+    min-width: 60px;
+    padding: 6px;
+    border: 1px solid #dfe6e9;
+    border-radius: 4px;
+    text-align: center;
+    box-sizing: border-box;
+}
+/* Result containers */
+#lineTableContainer,
+#measTableContainer,
+#resultContainer,
+#resultnondiagonal,
+#resultdiagonal,
+#ybusContainer {
+    margin-top: 20px;
+    overflow-x: auto; /* Ensures horizontal scrolling for table containers */
+    -webkit-overflow-scrolling: touch;
+}
+/* Section styling */
+.section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #fafbfc;
+    border-radius: 8px;
+    border: 1px solid #264772;
+}
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    /* margin-top: 200px; */
+    margin-left: -40px;
+    margin-right: -40px;
+    margin-bottom: -42px;
+    background-color: #466581;
+    color: white;
+    border-radius: 0 0 12px 12px;
+    font-size: 16px;
+}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .input-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    label {
+        min-width: auto;
+    }
+    input[type="number"] {
+        width: 100%;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    button {
+        width: 100%;
+    }
+    .instructions {
+        justify-content: center;
+    }
+    th, td {
+        padding: 8px 4px; /* Reduce padding on smaller screens */
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 480px) {
+    .section {
+        padding: 15px;
+    }
+    .container {
+        padding: 20px;
+    }
+}
+#results table {
+    margin: 10px 0;
+}
+#results h3, #results h4 {
+    text-align: left;
+    margin: 20px 0 10px 0;
+}
