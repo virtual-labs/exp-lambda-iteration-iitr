@@ -1,266 +1,498 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Economic Dispatch</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-      background-color: #f4f4f4;
-    }
-
-    input, button {
-      padding: 10px;
-      margin: 5px;
-    }
-
-    table {
-      width: 90%;
-      margin: 20px auto;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      border: 1px solid black;
-      padding: 8px;
-    }
-
-    button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    #results {
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Dispatch</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #394453;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+        }
+        /* Heading */
+        h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        /* Navbar */
+        .navbar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+        /* Instructions Button */
+        .instructions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        .instructions button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .instructions button:hover {
+            background-color: #040f19;
+        }
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            margin: 5% auto;
+            padding: 25px 30px;
+            border: none;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            animation: slideIn 0.3s ease;
+            box-sizing: border-box;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .close {
+            color: #444;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 20px;
+        }
+        .close:hover {
+            color: #e53935;
+        }
+        .close::before {
+            content: '×';
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* Input rows */
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        label {
+            color: #555;
+            font-weight: 500;
+            min-width: 200px;
+        }
+        input[type="number"] {
+            padding: 10px 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 250px;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        /* Buttons */
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .button-secondary {
+            background-color: #1f2e3e;
+        }
+        .button-secondary:hover {
+            background-color: #151f2b;
+        }
+        /* Table */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: max-content;
+        }
+        th, td {
+            border: 1px solid #dfe6e9;
+            padding: 12px;
+            text-align: center;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tbody tr:hover {
+            background-color: #e8f4f8;
+        }
+        td input {
+            width: 100%;
+            min-width: 60px;
+            padding: 6px;
+            border: 1px solid #dfe6e9;
+            border-radius: 4px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        /* Results */
+        #results {
+            margin-top: 20px;
+        }
+        #results table {
+            margin: 10px 0;
+        }
+        #results h3, #results h4 {
+            text-align: left;
+            margin: 20px 0 10px 0;
+            color: #2c3e50;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin: 30px -40px -40px -40px;
+            background-color: #466581;
+            color: white;
+            border-radius: 0 0 12px 12px;
+            font-size: 16px;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            .input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            label {
+                min-width: auto;
+            }
+            input[type="number"] {
+                width: 100%;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+            .instructions {
+                justify-content: center;
+            }
+            th, td {
+                padding: 8px 4px;
+                font-size: 0.8rem;
+            }
+            footer {
+                margin: 30px -25px -25px -25px;
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.75rem;
+            }
+            .instructions button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            footer {
+                margin: 30px -20px -20px -20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Economic Dispatch</h1>
+    <div class="container">
+        <h1>Economic Dispatch</h1>
 
-  <label for="numGenerators">Number of Generators:</label>
-  <input type="number" id="numGenerators" min="1" value="3">
-  <button onclick="generateTable()">Generate Generator Table</button>
-  <button onclick="autofillThreeGeneratorData()">Autofill Generator Cost Characteristics</button>
+        <div class="navbar">
+            <div class="instructions">
+                <button onclick="openModal()">Instructions</button>
+            </div>
 
-  <div class="container">
-    <label for="loadDemand">Load Demand (MW):</label>
-    <input type="number" id="loadDemand" value="0">
-</div>
+            <div class="input-row">
+                <label for="numGenerators">Number of Generators:</label>
+                <input type="number" id="numGenerators" min="1" value="3">
+            </div>
+            <div class="button-group">
+                <button onclick="generateTable()">Generate Generator Table</button>
+                <button onclick="autofillThreeGeneratorData()" class="button-secondary">Autofill Generator Cost Characteristics</button>
+            </div>
 
+            <div class="input-row">
+                <label for="loadDemand">Load Demand (MW):</label>
+                <input type="number" id="loadDemand" value="0">
+            </div>
 
+            <div id="generatorTableContainer" class="table-responsive"></div>
 
-  <div id="generatorTableContainer"></div>
-<!-- 
-  <div style="margin-top: 20px;">
-    <label for="loadDemand">Total Load Demand (MW):</label>
-    <input type="number" id="loadDemand" min="1" value="250">
-  </div> -->
+            <div class="button-group">
+                <button onclick="runEconomicDispatch()">Run Economic Dispatch</button>
+            </div>
 
-  <button onclick="runEconomicDispatch()">Run Economic Dispatch</button>
+            <div id="results"></div>
+        </div>
 
-  <div id="results"></div>
+        <footer>&copy; 2025 Virtual Labs | IIT Roorkee</footer>
+    </div>
 
-  <script>
-    function generateTable() {
-      const num = parseInt(document.getElementById("numGenerators").value);
-      const container = document.getElementById("generatorTableContainer");
-      let html = `<table>
-        <tr>
-          <th>Generator</th>
-          <th>a (Quadratic, ₹/MW^2)</th>
-          <th>b (Linear, ₹/MW)</th>
-          <th>c (Fixed, ₹)</th>
-          <th>Min Power (MW)</th>
-          <th>Max Power (MW)</th>
-        </tr>`;
+    <!-- Modal for Instructions -->
+    <div id="instructionModal" class="modal">
+        <div class="modal-content">
+            <!-- <span class="close" onclick="closeModal()"></span> -->
+            
+            <div style="font-family: 'Nunito Sans', sans-serif; font-size: 20px; text-align: justify; line-height: 1.6;">
+                <b>STEP 1</b>: Enter the number of generators in power system. Then, click on the <b>"Generate Generator Table"</b> and fill the details of generators i.e., a, b, c (Quadratic, linear and no-load cost coefficients), and Minimum (MW) and Maximum power (MW) for each buses and the load demand.
+                <br>
+                <b>Note:</b> Generator data for three generators systems is already provided. To access the data click on the button of <b>"Autofill Generator Cost Characteristics"</b>. 
+              <br><br>
+                <b>STEP 2</b>: Click on <b>"Run Economic Dispatch"</b>. 
+                <br><br>
+                <b>STEP 3</b>: The values of the generators scheduled power and its associated cost are displayed in Table format. The total cost incurred and the lambda are also displayed in the bottom.
+            </div>
+        </div>
+    </div>
 
-      for (let i = 0; i < num; i++) {
-        html += `<tr>
-          <td>G${i + 1}</td>
-          <td><input type="number" id="a${i}" step="0.01" placeholder="a${i}"></td>
-          <td><input type="number" id="b${i}" step="1" placeholder="b${i}"></td>
-          <td><input type="number" id="c${i}" step="1" placeholder="c${i}"></td>
-          <td><input type="number" id="Pmin${i}" step="1" placeholder="Min MW"></td>
-          <td><input type="number" id="Pmax${i}" step="1" placeholder="Max MW"></td>
-          </tr>`;
-      }
-
-      html += `</table>`;
-      container.innerHTML = html;
-    }
-
-    function autofillThreeGeneratorData() {
-    const numGeneratorsInput = document.getElementById("numGenerators");
-    numGeneratorsInput.value = 3;
-    generateTable();
-
-    const generatorData = [
-        { a: 0.001562, b: 7.92,  c: 561, Pmin: 150, Pmax: 600 },
-        { a: 0.00194,  b: 7.85,  c: 310, Pmin: 100, Pmax: 400 },
-        { a: 0.00482,  b: 7.97,  c: 78,  Pmin: 50,  Pmax: 200 }
-    ];
-
-    generatorData.forEach((g, i) => {
-        document.getElementById(`a${i}`).value = g.a;
-        document.getElementById(`b${i}`).value = g.b;
-        document.getElementById(`c${i}`).value = g.c;
-        document.getElementById(`Pmin${i}`).value = g.Pmin;
-        document.getElementById(`Pmax${i}`).value = g.Pmax;
-    });
-
-    // Set load demand to 850 MW
-    document.getElementById("loadDemand").value = 850;
-}
-
-  function runEconomicDispatch() {
-  const num = parseInt(document.getElementById("numGenerators").value);
-  const loadDemand = parseFloat(document.getElementById("loadDemand").value);
-
-  if (isNaN(num) || num < 1 || isNaN(loadDemand) || loadDemand <= 0) {
-    alert("Please enter valid number of generators and load demand.");
-    return;
-  }
-
-  let generators = [];
-  for (let i = 0; i < num; i++) {
-    let a = parseFloat(document.getElementById(`a${i}`).value);
-    let b = parseFloat(document.getElementById(`b${i}`).value);
-    let c = parseFloat(document.getElementById(`c${i}`).value);
-    let Pmin = parseFloat(document.getElementById(`Pmin${i}`).value);
-    let Pmax = parseFloat(document.getElementById(`Pmax${i}`).value);
-
-    if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(Pmin) || isNaN(Pmax)) {
-      alert(`Invalid input for Generator ${i + 1}`);
-      return;
-    }
-
-    generators.push({ id: i + 1, a, b, c, Pmin, Pmax, allocated: 0 });
-  }
-
-// --------------------------
-// ✅ Demand feasibility check
-// --------------------------
-const sumPmin = generators.reduce((sum, g) => sum + g.Pmin, 0);
-const sumPmax = generators.reduce((sum, g) => sum + g.Pmax, 0);
-
-if (loadDemand < sumPmin) {
-  alert(`⚠️ Demand (${loadDemand} MW) is less than the sum of minimum generation limits (${sumPmin} MW).`);
-  return;
-}
-if (loadDemand > sumPmax) {
-  alert(`⚠️ Demand (${loadDemand} MW) exceeds the total maximum capacity of generators (${sumPmax} MW).`);
-  return;
-}
-
-
-  let lambda = 0;
-  const allLinear = generators.every(g => g.a === 0);
-
-  // --------------------------
-  // Case 1: All linear costs
-  // --------------------------
-  if (allLinear) {
-    // Sort by b (incremental cost)
-    generators.sort((g1, g2) => g1.b - g2.b);
-
-    let remainingLoad = loadDemand;
-
-    for (const g of generators) {
-      if (remainingLoad <= 0) break;
-      let power = Math.min(g.Pmax, Math.max(g.Pmin, remainingLoad));
-      g.allocated = power;
-      remainingLoad -= power;
-    }
-
-    // Lambda is b of the last generator that was used
-    const lastUsed = generators.findLast(g => g.allocated > 0);
-    lambda = lastUsed ? lastUsed.b : 0;
-  }
-
-  // --------------------------
-  // Case 2: Quadratic or mixed
-  // --------------------------
-  else {
-    const tolerance = 0.01;
-    let lambdaLow = Math.min(...generators.map(g => g.a > 0 ? 2 * g.a * g.Pmin + g.b : Infinity));
-    let lambdaHigh = Math.max(...generators.map(g => g.a > 0 ? 2 * g.a * g.Pmax + g.b : -Infinity));
-    let iterations = 0;
-    const maxIterations = 1000;
-
-    let totalGen = 0;
-    let P = 0;
-
-    while (iterations < maxIterations) {
-      lambda = (lambdaLow + lambdaHigh) / 2;
-      let totalGen = 0;
-
-      for (let g of generators) {
-        let P;
-        if (g.a === 0) {
-          // Linear generator — if lambda > b, use Pmax else Pmin (acts as step cost)
-          P = lambda > g.b ? g.Pmax : g.Pmin;
-        } else {
-          P = (lambda - g.b) / (2 * g.a);
+    <script>
+        function openModal() {
+            document.getElementById('instructionModal').style.display = 'block';
         }
 
-        // Clamp within min/max
-        if (P < g.Pmin) P = g.Pmin;
-        if (P > g.Pmax) P = g.Pmax;
+        function closeModal() {
+            document.getElementById('instructionModal').style.display = 'none';
+        }
 
-        g.allocated = P;
-        totalGen += P;
-      }
+        window.onclick = function(event) {
+            var modal = document.getElementById('instructionModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
 
+        function generateTable() {
+            const num = parseInt(document.getElementById("numGenerators").value);
+            const container = document.getElementById("generatorTableContainer");
+            let html = `<table>
+                <tr>
+                    <th>Generator</th>
+                    <th>a (Quadratic, ₹/MW^2)</th>
+                    <th>b (Linear, ₹/MW)</th>
+                    <th>c (Fixed, ₹)</th>
+                    <th>Min Power (MW)</th>
+                    <th>Max Power (MW)</th>
+                </tr>`;
+            for (let i = 0; i < num; i++) {
+                html += `<tr>
+                    <td>G${i + 1}</td>
+                    <td><input type="number" id="a${i}" step="0.01" placeholder="a${i}"></td>
+                    <td><input type="number" id="b${i}" step="1" placeholder="b${i}"></td>
+                    <td><input type="number" id="c${i}" step="1" placeholder="c${i}"></td>
+                    <td><input type="number" id="Pmin${i}" step="1" placeholder="Min MW"></td>
+                    <td><input type="number" id="Pmax${i}" step="1" placeholder="Max MW"></td>
+                    </tr>`;
+            }
+            html += `</table>`;
+            container.innerHTML = html;
+        }
 
-      const mismatch = totalGen - loadDemand;
-      if (Math.abs(mismatch) < tolerance) break;
+        function autofillThreeGeneratorData() {
+            const numGeneratorsInput = document.getElementById("numGenerators");
+            numGeneratorsInput.value = 3;
+            generateTable();
+            const generatorData = [
+                { a: 0.001562, b: 7.92,  c: 561, Pmin: 150, Pmax: 600 },
+                { a: 0.00194,  b: 7.85,  c: 310, Pmin: 100, Pmax: 400 },
+                { a: 0.00482,  b: 7.97,  c: 78,  Pmin: 50,  Pmax: 200 }
+            ];
+            generatorData.forEach((g, i) => {
+                document.getElementById(`a${i}`).value = g.a;
+                document.getElementById(`b${i}`).value = g.b;
+                document.getElementById(`c${i}`).value = g.c;
+                document.getElementById(`Pmin${i}`).value = g.Pmin;
+                document.getElementById(`Pmax${i}`).value = g.Pmax;
+            });
+            document.getElementById("loadDemand").value = 850;
+        }
 
-      if (mismatch > 0) lambdaHigh = lambda;
-      else lambdaLow = lambda;
-
-      iterations++;
-
-      // Debug logs
-    console.log(`Iteration: ${iterations}, Lambda: ${lambda.toFixed(4)}, TotalGen: ${totalGen.toFixed(2)}, Mismatch: ${mismatch.toFixed(4)}`);
-  }
-
-  if (iterations >= maxIterations) {
-    console.warn("⚠️ Lambda Iteration reached maximum iterations without converging.");
-    }
-}
-
-
-generators.sort((g1, g2) => g1.id - g2.id);
-
-  // --------------------------
-  // Display Results
-  // --------------------------
-  let totalCost = 0;
-  let resultHtml = `<h3>Economic Dispatch Results</h3><table border="1">
-                    <tr><th>Generator</th><th>Scheduled Power (MW)</th><th>Cost (₹)</th></tr>`;
-
-  generators.forEach(g => {
-    let cost = 0;
-    if (g.allocated > 0) {
-      cost = g.a * g.allocated ** 2 + g.b * g.allocated + g.c;
-      totalCost += cost;
-    }
-    resultHtml += `<tr><td>G${g.id}</td><td>${g.allocated.toFixed(2)}</td><td>${cost.toFixed(2)}</td></tr>`;
-  });
-
-  resultHtml += `</table><h4>Total Cost: ${totalCost.toFixed(2)} ₹</h4>`;
-  resultHtml += `<h4>Lambda (Marginal Cost): ${lambda.toFixed(4)} ₹/MW</h4>`;
-  resultHtml += `<h4>Total Generation: ${generators.reduce((sum, g) => sum + g.allocated, 0).toFixed(2)} MW</h4>`;
-  resultHtml += `<h4>Total Demand: ${loadDemand.toFixed(2)} MW</h4>`;
-
-  document.getElementById("results").innerHTML = resultHtml;
-}
-
-</script>
+        function runEconomicDispatch() {
+            const num = parseInt(document.getElementById("numGenerators").value);
+            const loadDemand = parseFloat(document.getElementById("loadDemand").value);
+            if (isNaN(num) || num < 1 || isNaN(loadDemand) || loadDemand <= 0) {
+                alert("Please enter valid number of generators and load demand.");
+                return;
+            }
+            let generators = [];
+            for (let i = 0; i < num; i++) {
+                let a = parseFloat(document.getElementById(`a${i}`).value);
+                let b = parseFloat(document.getElementById(`b${i}`).value);
+                let c = parseFloat(document.getElementById(`c${i}`).value);
+                let Pmin = parseFloat(document.getElementById(`Pmin${i}`).value);
+                let Pmax = parseFloat(document.getElementById(`Pmax${i}`).value);
+                if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(Pmin) || isNaN(Pmax)) {
+                    alert(`Invalid input for Generator ${i + 1}`);
+                    return;
+                }
+                generators.push({ id: i + 1, a, b, c, Pmin, Pmax, allocated: 0 });
+            }
+            const sumPmin = generators.reduce((sum, g) => sum + g.Pmin, 0);
+            const sumPmax = generators.reduce((sum, g) => sum + g.Pmax, 0);
+            if (loadDemand < sumPmin) {
+                alert(`⚠️ Demand (${loadDemand} MW) is less than the sum of minimum generation limits (${sumPmin} MW).`);
+                return;
+            }
+            if (loadDemand > sumPmax) {
+                alert(`⚠️ Demand (${loadDemand} MW) exceeds the total maximum capacity of generators (${sumPmax} MW).`);
+                return;
+            }
+            let lambda = 0;
+            const allLinear = generators.every(g => g.a === 0);
+            if (allLinear) {
+                generators.sort((g1, g2) => g1.b - g2.b);
+                let remainingLoad = loadDemand;
+                for (const g of generators) {
+                    if (remainingLoad <= 0) break;
+                    let power = Math.min(g.Pmax, Math.max(g.Pmin, remainingLoad));
+                    g.allocated = power;
+                    remainingLoad -= power;
+                }
+                const lastUsed = generators.findLast(g => g.allocated > 0);
+                lambda = lastUsed ? lastUsed.b : 0;
+            } else {
+                const tolerance = 0.01;
+                let lambdaLow = Math.min(...generators.map(g => g.a > 0 ? 2 * g.a * g.Pmin + g.b : Infinity));
+                let lambdaHigh = Math.max(...generators.map(g => g.a > 0 ? 2 * g.a * g.Pmax + g.b : -Infinity));
+                let iterations = 0;
+                const maxIterations = 1000;
+                while (iterations < maxIterations) {
+                    lambda = (lambdaLow + lambdaHigh) / 2;
+                    let totalGen = 0;
+                    for (let g of generators) {
+                        let P;
+                        if (g.a === 0) {
+                            P = lambda > g.b ? g.Pmax : g.Pmin;
+                        } else {
+                            P = (lambda - g.b) / (2 * g.a);
+                        }
+                        if (P < g.Pmin) P = g.Pmin;
+                        if (P > g.Pmax) P = g.Pmax;
+                        g.allocated = P;
+                        totalGen += P;
+                    }
+                    const mismatch = totalGen - loadDemand;
+                    if (Math.abs(mismatch) < tolerance) break;
+                    if (mismatch > 0) lambdaHigh = lambda;
+                    else lambdaLow = lambda;
+                    iterations++;
+                }
+                if (iterations >= maxIterations) {
+                    console.warn("⚠️ Lambda Iteration reached maximum iterations without converging.");
+                }
+            }
+            generators.sort((g1, g2) => g1.id - g2.id);
+            let totalCost = 0;
+            let resultHtml = `<h3>Economic Dispatch Results</h3><table>
+                                <tr><th>Generator</th><th>Scheduled Power (MW)</th><th>Cost (₹)</th></tr>`;
+            generators.forEach(g => {
+                let cost = 0;
+                if (g.allocated > 0) {
+                    cost = g.a * g.allocated ** 2 + g.b * g.allocated + g.c;
+                    totalCost += cost;
+                }
+                resultHtml += `<tr><td>G${g.id}</td><td>${g.allocated.toFixed(2)}</td><td>${cost.toFixed(2)}</td></tr>`;
+            });
+            resultHtml += `</table><h4>Total Cost: ${totalCost.toFixed(2)} ₹</h4>`;
+            resultHtml += `<h4>Lambda (Marginal Cost): ${lambda.toFixed(4)} ₹/MW</h4>`;
+            resultHtml += `<h4>Total Generation: ${generators.reduce((sum, g) => sum + g.allocated, 0).toFixed(2)} MW</h4>`;
+            resultHtml += `<h4>Total Demand: ${loadDemand.toFixed(2)} MW</h4>`;
+            document.getElementById("results").innerHTML = resultHtml;
+        }
+    </script>
 </body>
 </html>
