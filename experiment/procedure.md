@@ -1,6 +1,6 @@
 <div style="font-family: 'Nunito Sans', sans-serif; font-size: 20px;text-align: justify;">
 
-## Procedure for Economic dispatch -  
+### Procedure for Economic dispatch -  
 
 <b>STEP 1</b>: Enter the number of generators in power system. Then, click on the "Generate Generator Table" and fill the details of generators i.e., a, b, c (Quadratic, linear and no-load cost coefficients), and Minimum (MW) and Maximum power (MW) for each buses and the load demand.
 <br>
