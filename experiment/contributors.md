@@ -1,4 +1,4 @@
-## Contributors
+
 
 ### Lab Proposer
 
