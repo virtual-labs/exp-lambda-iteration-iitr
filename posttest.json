@@ -1,0 +1,52 @@
+[ 
+	{
+		"question": "If the unconstrained solution of a generator output falls below its minimum limit:",
+		"answers": {
+			"a": "It is set equal to its minimum limit.",
+			"b": "It is set equal to zero.",
+			"c": "It is forced to maximum output.",
+			"d": "The generator is shut down."
+		},
+		"correctAnswer": "a"
+	},
+	{
+		"question": "If a generator is operating at its Pmin then",
+		"answers": {
+			"a": "system price <= generator's incremental price",
+			"b": "system price < generator's incremental price",
+			"c": "system price = generator's incremental price",
+			"d": "system price > generator's incremental price "
+		},
+		"correctAnswer": "b"
+	},
+	{
+		"question": "In power system operation, the equal incremental cost criterion used in economic dispatch belongs to which level of control?",
+		"answers": {
+			"a": "Primary control",
+			"b": "Secondary control",
+			"c": "Tertiary control",
+			"d": "Protection control"
+		},
+		"correctAnswer": "c"
+	},
+	{
+		"question": "If a generator has cost function C(P)= 0.002P^2+8P+100, what is the incremental cost function?",
+		"answers": {
+			"a": "0.004P+8",
+			"b": "0.002P+8",
+			"c": "0.004P+100",
+			"d": "8P+100"
+		},
+		"correctAnswer": "a"
+	},
+	{
+		"question": "If all the generators have linear cost function, then the lambda value is taken as",
+		"answers": {
+			"a": "Average of all the b values",
+			"b": "b of the last scheduled generator",
+			"c": "Maximum of b",
+			"d": "Zero"
+		},
+		"correctAnswer": "b"
+	}
+]
