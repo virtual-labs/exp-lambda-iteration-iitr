@@ -1,0 +1,9 @@
+
+/home/runner/work/exp-lambda-iteration-iitr/exp-lambda-iteration-iitr/experiment/simulation/script.js
+   26:10  warning  'autofillThreeGeneratorData' is defined but never used  no-unused-vars
+   45:10  warning  'runEconomicDispatch' is defined but never used         no-unused-vars
+  106:13  warning  'totalGen' is assigned a value but never used           no-unused-vars
+  107:13  warning  'P' is assigned a value but never used                  no-unused-vars
+
+✖ 4 problems (0 errors, 4 warnings)
+
