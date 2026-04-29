@@ -6,4 +6,4 @@
 
 4. A. J. Wood and B. F. Wollenberg, Power Generation Operation and Control, John Wiley & Sons, 1996.<br>
 
-5. Dr. Biswarup Das and Dr. Vinay Pant, NPTEL Course: Computer Aided Power System Analysis. Available: https://nptel.ac.in/courses/108107028
+5. Dr. Abheejeet Mohapatra NPTEL Course: Power Newtwork Analysis. Available: https://nptel.ac.in/courses/108104720
